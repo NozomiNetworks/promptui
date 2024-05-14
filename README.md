@@ -4,12 +4,8 @@ Interactive prompt for command-line applications.
 
 This project is a fork of the original [promptui project](https://github.com/manifoldco/promptui) by the Manifold Co.
 
-[Contribution Guidelines](./.github/CONTRIBUTING.md)
-
 [![GitHub release](https://img.shields.io/github/tag/sohomdatta1/promptui.svg?label=latest)](https://github.com/sohomdatta1/promptui/releases)
 [![GoDoc](https://img.shields.io/badge/godoc-reference-blue.svg)](https://godoc.org/github.com/sohomdatta1/promptui)
-[![Travis](https://img.shields.io/travis/sohomdatta1/promptui/master.svg)](https://travis-ci.org/sohomdatta1/promptui)
-[![Go Report Card](https://goreportcard.com/badge/github.com/sohomdatta1/promptui)](https://goreportcard.com/report/github.com/sohomdatta1/promptui)
 [![License](https://img.shields.io/badge/license-BSD-blue.svg)](./LICENSE.md)
 
 ## Overview
