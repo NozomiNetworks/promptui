@@ -2,7 +2,8 @@
 
 Interactive prompt for command-line applications.
 
-[Code of Conduct](./CODE_OF_CONDUCT.md) |
+This project is a fork of the original [promptui project](https://github.com/manifoldco/promptui) by the Manifold Co.
+
 [Contribution Guidelines](./.github/CONTRIBUTING.md)
 
 [![GitHub release](https://img.shields.io/github/tag/sohomdatta1/promptui.svg?label=latest)](https://github.com/sohomdatta1/promptui/releases)
