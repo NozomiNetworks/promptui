@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os/user"
 
-	"github.com/manifoldco/promptui"
+	"github.com/sohomdatta1/promptui"
 )
 
 func main() {
