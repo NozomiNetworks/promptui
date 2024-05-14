@@ -53,12 +53,6 @@ changes to your submission during the review process.
   build will succeed
 
 
-# Code of Conduct
-
-All community members are expected to adhere to our [code of
-conduct](../CODE_OF_CONDUCT.md).
-
-
 # License
 
 promptui is released under the [BSD 3-Clause
