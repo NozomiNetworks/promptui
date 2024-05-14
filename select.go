@@ -180,6 +180,7 @@ type SelectTemplates struct {
 	selected *template.Template
 	details  *template.Template
 	help     *template.Template
+	vimMode  *template.Template
 }
 
 // SearchPrompt is the prompt displayed in search mode.
@@ -472,8 +473,9 @@ func (s *Select) prepareTemplates() error {
 	}
 
 	if tpls.Help == "" {
-		tpls.Help = fmt.Sprintf(`{{ "Use the arrow keys to navigate:" | faint }} {{ .NextKey | faint }} ` +
-			`{{ .PrevKey | faint }} {{ .PageDownKey | faint }} {{ .PageUpKey | faint }} ` +
+		tpls.Help = fmt.Sprintf(`{{ "Use the following keys to navigate:" | faint }} {{ .NextKey | faint }} ` +
+			`{{ .PrevKey | faint }} {{ .PageDownKey | faint }} {{ .PageUpKey | faint }}` +
+			`{{ if .IsVimMode }} {{ "or use vim keys" | faint }} {{ end }}` +
 			`{{ if .Search }} {{ "and" | faint }} {{ .SearchKey | faint }} {{ "toggles search" | faint }}{{ end }}`)
 	}
 
@@ -617,6 +619,7 @@ func (s *Select) renderHelp(b bool) []byte {
 		PageUpKey   string
 		Search      bool
 		SearchKey   string
+		IsVimMode   bool
 	}{
 		NextKey:     s.Keys.Next.Display,
 		PrevKey:     s.Keys.Prev.Display,
@@ -624,6 +627,7 @@ func (s *Select) renderHelp(b bool) []byte {
 		PageUpKey:   s.Keys.PageUp.Display,
 		SearchKey:   s.Keys.Search.Display,
 		Search:      b,
+		IsVimMode:   s.IsVimMode,
 	}
 
 	return render(s.Templates.help, keys)
