@@ -7,7 +7,10 @@ mod-update:
 mod-tidy:
 	go mod tidy
 
-.PHONY: mod-update mod-tidy
+fmt:
+	go fmt -w $(go list ./... | grep -v generated)
+
+.PHONY: mod-update mod-tidy fmt
 
 test:
 	go test $(go list ./... | grep -v generated)
