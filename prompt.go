@@ -33,6 +33,10 @@ type Prompt struct {
 	// allows hiding private information like passwords.
 	Mask rune
 
+	// LazyValidation sets whether to validate the input only after the user has pressed enter. If false, the
+	// validation will be done once the user presses enter.
+	LazyValidation bool
+
 	// HideEntered sets whether to hide the text after the user has pressed enter.
 	HideEntered bool
 
@@ -94,6 +98,10 @@ type PromptTemplates struct {
 	// inside the console.
 	Success string
 
+	// Unvalidated is a text/template for the prompt label when the value entered is unvalidated.
+	// this is the state used when the LazyValidation option is set to true.
+	Unvalidated string
+
 	// Prompt is a text/template for the prompt label when the value is invalid due to an error triggered by
 	// the prompt's validation function.
 	ValidationError string
@@ -105,11 +113,12 @@ type PromptTemplates struct {
 	// is overridden, the colors functions must be added in the override from promptui.FuncMap to work.
 	FuncMap template.FuncMap
 
-	prompt     *template.Template
-	valid      *template.Template
-	invalid    *template.Template
-	validation *template.Template
-	success    *template.Template
+	prompt      *template.Template
+	valid       *template.Template
+	invalid     *template.Template
+	validation  *template.Template
+	success     *template.Template
+	unvalidated *template.Template
 }
 
 // Run executes the prompt. Its displays the label and default value if any, asking the user to enter a value.
@@ -163,16 +172,21 @@ func (p *Prompt) Run() (string, error) {
 
 	listen := func(input []rune, pos int, key rune) ([]rune, int, bool) {
 		_, _, keepOn := cur.Listen(input, pos, key)
-		err := validFn(cur.Get())
 		var prompt []byte
 
-		if err != nil {
-			prompt = render(p.Templates.invalid, p.Label)
-		} else {
-			prompt = render(p.Templates.valid, p.Label)
-			if p.IsConfirm {
-				prompt = render(p.Templates.prompt, p.Label)
+		if !p.LazyValidation {
+			err := validFn(cur.Get())
+
+			if err != nil {
+				prompt = render(p.Templates.invalid, p.Label)
+			} else {
+				prompt = render(p.Templates.valid, p.Label)
+				if p.IsConfirm {
+					prompt = render(p.Templates.prompt, p.Label)
+				}
 			}
+		} else {
+			prompt = render(p.Templates.unvalidated, p.Label)
 		}
 
 		echo := cur.Format()
@@ -306,6 +320,17 @@ func (p *Prompt) prepareTemplates() error {
 	}
 
 	tpls.valid = tpl
+
+	if tpls.Unvalidated == "" {
+		tpls.Unvalidated = fmt.Sprintf("%s {{ . | bold }}%s ", bold(IconInitial), bold(":"))
+	}
+
+	tpl, err = template.New("").Funcs(tpls.FuncMap).Parse(tpls.Unvalidated)
+	if err != nil {
+		return err
+	}
+
+	tpls.unvalidated = tpl
 
 	if tpls.Invalid == "" {
 		tpls.Invalid = fmt.Sprintf("%s {{ . | bold }}%s ", bold(IconBad), bold(":"))

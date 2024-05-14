@@ -180,7 +180,6 @@ type SelectTemplates struct {
 	selected *template.Template
 	details  *template.Template
 	help     *template.Template
-	vimMode  *template.Template
 }
 
 // SearchPrompt is the prompt displayed in search mode.
@@ -475,7 +474,7 @@ func (s *Select) prepareTemplates() error {
 	if tpls.Help == "" {
 		tpls.Help = fmt.Sprintf(`{{ "Use the following keys to navigate:" | faint }}` +
 			`{{ if .IsVimMode }} {{ "j (Up), k (Down), h (Page Up), l (Page Down)" | faint }} {{ else }} {{ .NextKey | faint }} ` +
-			`{{ .PrevKey | faint }} {{ .PageDownKey | faint }} {{ .PageUpKey | faint }} {{ end }}` +
+			`{{ .PrevKey | faint }} {{ .PageDownKey | faint }} {{ .PageUpKey | faint }} {{ "or vim keys" | faint }} {{ end }}` +
 			`{{ if .Search }} {{ "and" | faint }} {{ .SearchKey | faint }} {{ "toggles search" | faint }}{{ end }}`)
 	}
 

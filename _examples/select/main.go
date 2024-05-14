@@ -11,7 +11,6 @@ func main() {
 		Label: "Select Day",
 		Items: []string{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday",
 			"Saturday", "Sunday"},
-		IsVimMode: true,
 	}
 
 	_, result, err := prompt.Run()
