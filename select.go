@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"io"
-	"os"
 	"text/tabwriter"
 	"text/template"
 
@@ -518,6 +517,9 @@ type SelectWithAdd struct {
 
 	// HideHelp sets whether to hide help information.
 	HideHelp bool
+
+	Stdin  io.ReadCloser
+	Stdout io.WriteCloser
 }
 
 // Run executes the select list. Its displays the label and the list of items, asking the user to chose any
@@ -544,6 +546,8 @@ func (sa *SelectWithAdd) Run() (int, string, error) {
 			Size:      5,
 			list:      list,
 			Pointer:   sa.Pointer,
+			Stdin:     sa.Stdin,
+			Stdout:    sa.Stdout,
 		}
 		s.setKeys()
 
@@ -558,7 +562,7 @@ func (sa *SelectWithAdd) Run() (int, string, error) {
 		}
 
 		// XXX run through terminal for windows
-		os.Stdout.Write([]byte(upLine(1) + "\r" + clearLine))
+		sa.Stdout.Write([]byte(upLine(1) + "\r" + clearLine))
 	}
 
 	p := Prompt{
