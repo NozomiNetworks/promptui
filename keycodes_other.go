@@ -3,7 +3,7 @@
 
 package promptui
 
-import "github.com/chzyer/readline"
+import "github.com/ergochat/readline"
 
 var (
 	// KeyBackspace is the default key for deleting input text.

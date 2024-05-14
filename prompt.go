@@ -6,7 +6,7 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/chzyer/readline"
+	"github.com/ergochat/readline"
 	"github.com/sohomdatta1/promptui/screenbuf"
 )
 
@@ -133,21 +133,15 @@ func (p *Prompt) Run() (string, error) {
 	}
 
 	c := &readline.Config{
-		Stdin:          p.Stdin,
-		Stdout:         p.Stdout,
-		EnableMask:     p.Mask != 0,
-		MaskRune:       p.Mask,
-		HistoryLimit:   -1,
-		VimMode:        p.IsVimMode,
-		UniqueEditLine: true,
+		Stdin:        p.Stdin,
+		Stdout:       p.Stdout,
+		EnableMask:   p.Mask != 0,
+		MaskRune:     p.Mask,
+		HistoryLimit: -1,
+		VimMode:      p.IsVimMode,
 	}
 
-	err = c.Init()
-	if err != nil {
-		return "", err
-	}
-
-	rl, err := readline.NewEx(c)
+	rl, err := readline.NewFromConfig(c)
 	if err != nil {
 		return "", err
 	}
@@ -206,10 +200,10 @@ func (p *Prompt) Run() (string, error) {
 		return nil, 0, keepOn
 	}
 
-	c.SetListener(listen)
+	c.Listener = listen
 
 	for {
-		_, err = rl.Readline()
+		_, err = rl.ReadLine()
 		inputErr = validFn(cur.Get())
 		if inputErr == nil {
 			break

@@ -5,7 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [0.10.0] - 2024-05-14
+
+### Modified
+
+- Forked from (manifold/promptui) (New maintainer @sohomdatta1)
+
+### Added
+
+- Selecting "n" on confirm prompt with default options does not fail
+- 
 
 ## [0.9.0] - 2021-10-30
 

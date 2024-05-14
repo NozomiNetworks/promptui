@@ -1,6 +1,6 @@
 package promptui
 
-import "github.com/chzyer/readline"
+import "github.com/ergochat/readline"
 
 // These runes are used to identify the commands entered by the user in the command prompt. They map
 // to specific actions of promptui in prompt mode and can be remapped if necessary.

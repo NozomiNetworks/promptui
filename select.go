@@ -7,7 +7,7 @@ import (
 	"text/tabwriter"
 	"text/template"
 
-	"github.com/chzyer/readline"
+	"github.com/ergochat/readline"
 	"github.com/sohomdatta1/promptui/list"
 	"github.com/sohomdatta1/promptui/screenbuf"
 )
@@ -226,21 +226,14 @@ func (s *Select) innerRun(cursorPos, scroll int, top rune) (int, string, error) 
 		Stdin:  s.Stdin,
 		Stdout: s.Stdout,
 	}
-	err := c.Init()
-	if err != nil {
-		return 0, "", err
-	}
-
-	c.Stdin = readline.NewCancelableStdin(c.Stdin)
 
 	if s.IsVimMode {
 		c.VimMode = true
 	}
 
 	c.HistoryLimit = -1
-	c.UniqueEditLine = true
 
-	rl, err := readline.NewEx(c)
+	rl, err := readline.NewFromConfig(c)
 	if err != nil {
 		return 0, "", err
 	}
@@ -255,7 +248,7 @@ func (s *Select) innerRun(cursorPos, scroll int, top rune) (int, string, error) 
 	s.list.SetCursor(cursorPos)
 	s.list.SetStart(scroll)
 
-	c.SetListener(func(line []rune, pos int, key rune) ([]rune, int, bool) {
+	c.Listener = func(line []rune, pos int, key rune) ([]rune, int, bool) {
 		switch {
 		case key == KeyEnter:
 			return nil, 0, true
@@ -353,7 +346,7 @@ func (s *Select) innerRun(cursorPos, scroll int, top rune) (int, string, error) 
 		sb.Flush()
 
 		return nil, 0, true
-	})
+	}
 
 	for {
 		_, err = rl.Readline()
