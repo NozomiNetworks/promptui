@@ -7,7 +7,6 @@ import (
 	"text/template"
 
 	"github.com/ergochat/readline"
-	"github.com/sohomdatta1/promptui/screenbuf"
 )
 
 // Prompt represents a single line text field input with options for validation and input masks.
@@ -37,9 +36,6 @@ type Prompt struct {
 	// validation will be done once the user presses enter.
 	LazyValidation bool
 
-	// HideEntered sets whether to hide the text after the user has pressed enter.
-	HideEntered bool
-
 	// Templates can be used to customize the prompt output. If nil is passed, the
 	// default templates are used. See the PromptTemplates docs for more info.
 	Templates *PromptTemplates
@@ -54,8 +50,8 @@ type Prompt struct {
 	// the Pointer defines how to render the cursor.
 	Pointer Pointer
 
-	Stdin  io.ReadCloser
-	Stdout io.WriteCloser
+	Stdin  io.Reader
+	Stdout io.Writer
 }
 
 // PromptTemplates allow a prompt to be customized following stdlib
@@ -145,9 +141,8 @@ func (p *Prompt) Run() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	// we're taking over the cursor,  so stop showing it.
+	// we're taking over the cursor, so stop showing it.
 	rl.Write([]byte(hideCursor))
-	sb := screenbuf.New(rl)
 
 	validFn := func(x string) error {
 		return nil
@@ -156,7 +151,6 @@ func (p *Prompt) Run() (string, error) {
 		validFn = p.Validate
 	}
 
-	var inputErr error
 	input := p.Default
 	if p.IsConfirm {
 		input = ""
@@ -189,30 +183,27 @@ func (p *Prompt) Run() (string, error) {
 		}
 
 		prompt = append(prompt, []byte(echo)...)
-		sb.Reset()
-		sb.Write(prompt)
-		if inputErr != nil {
-			validation := render(p.Templates.validation, inputErr)
-			sb.Write(validation)
-			inputErr = nil
-		}
-		sb.Flush()
+		rl.SetPrompt(string(prompt))
+		rl.Refresh()
 		return nil, 0, keepOn
 	}
 
 	c.Listener = listen
-
-	for {
-		_, err = rl.ReadLine()
-		inputErr = validFn(cur.Get())
-		if inputErr == nil {
-			break
+	c.FuncFilterInputRune = func(r rune) (rune, bool) {
+		switch r {
+		case readline.CharEnter, readline.CharCtrlJ:
+			err = validFn(cur.Get())
+			if err != nil {
+				validation := render(p.Templates.validation, err)
+				rl.SetPrompt(string(validation))
+				return r, false
+			}
+			return r, true
 		}
-
-		if err != nil {
-			break
-		}
+		return r, true
 	}
+
+	_, err = rl.ReadLine()
 
 	if err != nil {
 		switch err {
@@ -224,11 +215,6 @@ func (p *Prompt) Run() (string, error) {
 		if err.Error() == "Interrupt" {
 			err = ErrInterrupt
 		}
-		sb.Reset()
-		sb.WriteString("")
-		sb.Flush()
-		rl.Write([]byte(showCursor))
-		rl.Close()
 		return "", err
 	}
 
@@ -250,14 +236,8 @@ func (p *Prompt) Run() (string, error) {
 
 	}
 
-	if p.HideEntered {
-		clearScreen(sb)
-	} else {
-		sb.Reset()
-		sb.Write(prompt)
-		sb.Flush()
-	}
-
+	rl.Write(prompt)
+	rl.Write([]byte("\n"))
 	rl.Write([]byte(showCursor))
 	rl.Close()
 
@@ -338,7 +318,7 @@ func (p *Prompt) prepareTemplates() error {
 	tpls.invalid = tpl
 
 	if tpls.ValidationError == "" {
-		tpls.ValidationError = `{{ ">>" | red }} {{ . | red }}`
+		tpls.ValidationError = `{{ ">>" | red }} {{ . | red }} {{ "Press any key to get back to the prompt" | faint }}`
 	}
 
 	tpl, err = template.New("").Funcs(tpls.FuncMap).Parse(tpls.ValidationError)

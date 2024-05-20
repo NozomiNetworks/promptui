@@ -71,14 +71,13 @@ type Select struct {
 	// StartInSearchMode sets whether or not the select mode should start in search mode or selection mode.
 	// For search mode to work, the Search property must be implemented.
 	StartInSearchMode bool
-
-	list *list.List
+	list              *list.List
 
 	// A function that determines how to render the cursor
 	Pointer Pointer
 
-	Stdin  io.ReadCloser
-	Stdout io.WriteCloser
+	Stdin  io.Reader
+	Stdout io.Writer
 }
 
 // SelectKeys defines the available keys used by select mode to enable the user to move around the list
@@ -103,7 +102,7 @@ type SelectKeys struct {
 // Key defines a keyboard code and a display representation for the help menu.
 type Key struct {
 	// Code is a rune that will be used to compare against typed keys with readline.
-	// Check https://github.com/chzyer/readline for a list of codes
+	// Check https://github.com/ergochat/readline for a list of codes
 	Code rune
 
 	// Display is the string that will be displayed inside the help menu to help inform the user
@@ -512,8 +511,8 @@ type SelectWithAdd struct {
 	// HideHelp sets whether to hide help information.
 	HideHelp bool
 
-	Stdin  io.ReadCloser
-	Stdout io.WriteCloser
+	Stdin  io.Reader
+	Stdout io.Writer
 }
 
 // Run executes the select list. Its displays the label and the list of items, asking the user to chose any
