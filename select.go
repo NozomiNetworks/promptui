@@ -8,8 +8,8 @@ import (
 	"text/template"
 
 	"github.com/ergochat/readline"
-	"github.com/sohomdatta1/promptui/list"
-	"github.com/sohomdatta1/promptui/screenbuf"
+	"github.com/NozomiNetworks/promptui/list"
+	"github.com/NozomiNetworks/promptui/screenbuf"
 )
 
 // SelectedAdd is used internally inside SelectWithAdd when the add option is selected in select mode.

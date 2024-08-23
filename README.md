@@ -4,8 +4,8 @@ Interactive prompt for command-line applications.
 
 This project is a fork of the original [promptui project](https://github.com/manifoldco/promptui) by the Manifold Co.
 
-[![GitHub release](https://img.shields.io/github/tag/sohomdatta1/promptui.svg?label=latest)](https://github.com/sohomdatta1/promptui/releases)
-[![GoDoc](https://img.shields.io/badge/godoc-reference-blue.svg)](https://godoc.org/github.com/sohomdatta1/promptui)
+[![GitHub release](https://img.shields.io/github/tag/NozomiNetworks/promptui.svg?label=latest)](https://github.com/NozomiNetworks/promptui/releases)
+[![GoDoc](https://img.shields.io/badge/godoc-reference-blue.svg)](https://godoc.org/github.com/NozomiNetworks/promptui)
 [![License](https://img.shields.io/badge/license-BSD-blue.svg)](./LICENSE.md)
 
 ## Overview
@@ -25,7 +25,7 @@ Promptui has two main input modes:
 - `Select` provides a list of options to choose from. Select supports
   pagination, search, detailed view and custom templates.
 
-For a full list of options check [GoDoc](https://godoc.org/github.com/sohomdatta1/promptui).
+For a full list of options check [GoDoc](https://godoc.org/github.com/NozomiNetworks/promptui).
 
 ## Basic Usage
 
@@ -39,7 +39,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/sohomdatta1/promptui"
+	"github.com/NozomiNetworks/promptui"
 )
 
 func main() {
@@ -75,7 +75,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/sohomdatta1/promptui"
+	"github.com/NozomiNetworks/promptui"
 )
 
 func main() {
@@ -98,4 +98,4 @@ func main() {
 
 ### More Examples
 
-See full list of [examples](https://github.com/sohomdatta1/promptui/tree/master/_examples)
+See full list of [examples](https://github.com/NozomiNetworks/promptui/tree/master/_examples)

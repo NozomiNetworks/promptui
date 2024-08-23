@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Modified
 
-- Forked from (manifold/promptui) (New maintainer @sohomdatta1)
+- Forked from (sohomdatta1/promptui) (New maintainer @NozomiNetworks)
 
 ### Added
 

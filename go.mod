@@ -1,4 +1,4 @@
-module github.com/sohomdatta1/promptui
+module github.com/NozomiNetworks/promptui
 
 go 1.22
 

@@ -34,7 +34,7 @@ Your issue must follow these guidelines for it to be considered:
 
 - Check you’re on the latest version, we may have already fixed your bug!
 - [Search our issue
-  tracker](https://github.com/sohomdatta1/promptui/issues/search&type=issues)
+  tracker](https://github.com/NozomiNetworks/promptui/issues/search&type=issues)
   for your problem, someone may have already reported it
 
 # Opening a Pull Request
