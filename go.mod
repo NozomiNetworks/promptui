@@ -1,6 +1,6 @@
 module github.com/NozomiNetworks/promptui
 
-go 1.22
+go 1.20
 
 require github.com/ergochat/readline v0.1.2-0.20240515053957-087affdc83e9
 
